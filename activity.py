@@ -284,6 +284,26 @@ class scoreWindow:
     cssw=1
     scoreWindow()
 
+class ScoreButton(ToolButton):
+    def __init__(self, activity, **kwargs):
+        ToolButton.__init__(self, 'score_card', **kwargs)
+        self.props.tooltip = _('Score Card')
+        self.connect('clicked', self.__show_score_win, activity)
+
+    def __show_score_win(self, button, activity):
+    scoreWindow()
+
+
+class NotifyAlert1(Alert):
+    def __init__(self, **kwargs):
+    Alert.__init__(self, **kwargs)
+
+
+        self.add_button(1, _('New\nGame'), icon=None)
+        self.add_button(2, _(' Change \n Numbers '), icon=None)
+        self.add_button(3, _('Easy'), icon=None)
+        self.add_button(4, _('Medium'), icon=None)
+        self.add_button(5, _('Hard'), icon=None)
 
 # pylint: disable-msg=W0223
 class Chat(activity.Activity):
