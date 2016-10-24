@@ -1,12 +1,8 @@
 [Activity]
-name      = Chat
-summary   = Text chat
+name      = ChatStudioSelf
+summary   = Text chat game with computer
 license   = GPLv2+
 icon      = activity-icon
-exec      = sugar-activity activity.Chat
-# original activity.info options
-activity_version = 82
-max_participants = 20
-bundle_id = org.laptop.Chat
-category = language
-repository = https://github.com/walterbender/chat
+exec      = sugar-activity activity.ChatStudioSelf
+activity_version = 78
+bundle_id = org.laptop.ChatStudioSelf
