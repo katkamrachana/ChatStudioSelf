@@ -1,6 +1,67 @@
-<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd' [
-	<!ENTITY stroke_color "#010101">
-	<!ENTITY fill_color "#FFFFFF">
-]><svg enable-background="new 0 0 55 55" height="55px" version="1.1" viewBox="0 0 55 55" width="55px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"><g display="block" id="activity-chat">
-	<path d="M9.263,48.396c0.682,1.152,6.027,0.059,8.246-1.463   c2.102-1.432,3.207-2.596,4.336-2.596c1.133,0,12.54,0.92,20.935-5.715c7.225-5.707,9.773-13.788,4.52-21.437   c-5.252-7.644-13.832-9.08-20.878-8.56C16.806,9.342,4.224,16.91,4.677,28.313c0.264,6.711,3.357,9.143,4.922,10.703   c1.562,1.566,4.545,1.566,2.992,5.588C11.981,46.183,8.753,47.522,9.263,48.396z" display="inline" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5"/>
-</g></svg><!-- " -->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   enable-background="new 0 0 55 55"
+   height="55px"
+   version="1.1"
+   viewBox="0 0 55 55"
+   width="55px"
+   x="0px"
+   xml:space="preserve"
+   y="0px"
+   id="svg2"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="activity-icon.svg"><metadata
+     id="metadata11"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+     id="defs9" /><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1600"
+     inkscape:window-height="841"
+     id="namedview7"
+     showgrid="false"
+     inkscape:zoom="4.2909091"
+     inkscape:cx="27.966102"
+     inkscape:cy="27.5"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" /><g
+     display="block"
+     id="activity-chat"
+     transform="matrix(1.0666934,0,0,1.0425212,-1.1266219,-2.1526841)"
+     style="display:block">
+	<path
+   d="m 9.263,48.396 c 0.682,1.152 6.027,0.059 8.246,-1.463 2.102,-1.432 3.207,-2.596 4.336,-2.596 1.133,0 12.54,0.92 20.935,-5.715 C 50.005,32.915 52.553,24.834 47.3,17.185 42.048,9.541 33.468,8.105 26.422,8.625 16.806,9.342 4.224,16.91 4.677,28.313 c 0.264,6.711 3.357,9.143 4.922,10.703 1.562,1.566 4.545,1.566 2.992,5.588 -0.61,1.579 -3.838,2.918 -3.328,3.792 z"
+   display="inline"
+   id="path5"
+   inkscape:connector-curvature="0"
+   style="fill:#ffffff;stroke:#010101;stroke-width:3.5;display:inline" />
+</g><g
+     transform="matrix(0.54148376,0,0,0.48855433,12.546007,11.805826)"
+     style="display:block"
+     display="block"
+     id="computer"><path
+       style="fill:#ffffff;stroke:#666666;stroke-width:3.48670006;stroke-linejoin:round"
+       inkscape:connector-curvature="0"
+       d="m 51.322,41.549 h 0.002 l -0.022,-0.018 c -0.15,-0.109 -12.64,-7.878 -12.64,-7.878 V 9.734 c 0,-1.618 -1.31,-2.932 -2.929,-2.932 h -30.9 c -1.619,0 -2.931,1.314 -2.931,2.932 v 26.313 c 0,1.096 0.608,2.037 1.498,2.541 l -0.02,0.004 14.603,9.102 c 0.691,0.436 1.528,0.688 2.428,0.688 h 28.212 c 2.352,0 4.278,-1.733 4.278,-3.85 10e-4,-1.202 -0.618,-2.275 -1.579,-2.983 z"
+       id="module-about_x5F_my_x5F_xo" /><path
+       style="fill:#666666"
+       inkscape:connector-curvature="0"
+       d="m 7.604,13.446 c 0,-0.616 0.504,-1.12 1.12,-1.12 h 23.117 c 0.615,0 1.118,0.503 1.118,1.12 v 16.499 c 0,0.614 -0.503,1.122 -1.118,1.122 H 8.723 c -0.615,0 -1.12,-0.508 -1.12,-1.122 l 0.001,-16.499 0,0 z"
+       id="path3061" /></g></svg><!-- " -->
+
