@@ -96,6 +96,79 @@ accscores=[]
 ad=False
 sb=False
 
+class VisualScore(ToolButton):
+    def __init__(self, activity, **kwargs):
+        ToolButton.__init__(self, 'scorestats', **kwargs)
+        self.props.tooltip = _('Score Stats')
+        self.connect('clicked', self.draw_bars1)
+
+
+    def draw_bars1(self,button):
+    win = gtk.Window()
+    win.connect("destroy", lambda x: gtk.main_quit())
+    win.set_default_size(800,490)
+    win.set_position(gtk.WIN_POS_CENTER)
+    win.modify_bg(gtk.STATE_NORMAL,gtk.gdk.color_parse('white'))
+    win.set_title("Score Statistics")
+    f = Figure(figsize=(5,4), dpi=100)
+    a = f.add_subplot(111)
+    alist=[]
+    dlist=[]
+        with open("accuracylist.txt", "r") as infile:
+     for line in infile:
+      a1=line.strip()
+      alist.append(int(a1))
+        with open("dateslist.txt", "r") as infile1:
+     for i in infile1:
+      a2=i.strip()
+      dlist.append(a2)
+    y_pos = np.arange(len(dlist))   
+    error = np.random.rand(len(dlist))
+    a.barh(y_pos, alist, xerr=error, align='center', alpha=0.4)
+    a.set_yticks(y_pos)
+    a.set_yticklabels(dlist)
+    canvas = FigureCanvas(f)  # a gtk.DrawingArea
+    win.add(canvas)
+    win.show_all()
+    gtk.main()
+
+class VisualTime(ToolButton):
+    def __init__(self, activity, **kwargs):
+
+        ToolButton.__init__(self, 'timestats', **kwargs)
+        self.props.tooltip = _('Time Stats')
+        self.connect('clicked', self.draw_bars)
+
+    def draw_bars(self,button):
+    win = gtk.Window()
+    win.connect("destroy", lambda x: gtk.main_quit())
+    win.modify_bg(gtk.STATE_NORMAL,gtk.gdk.color_parse('white'))
+    win.set_default_size(800,490)
+    win.set_position(gtk.WIN_POS_CENTER)
+    win.set_title("Time Statistics")
+    f1 = Figure(figsize=(5,4), dpi=100)
+    a = f1.add_subplot(111)
+    tlist=[]
+    dlist=[]
+        with open("timeslist.txt", "r") as infile:
+     for line in infile:
+      a1=line.strip()
+      tlist.append(float(a1))
+
+        with open("dateslist.txt", "r") as infile1:
+     for i in infile1:
+      a2=i.strip()
+      dlist.append(a2)
+    y_pos = np.arange(len(dlist))   
+    error = np.random.rand(len(dlist))
+    a.barh(y_pos, tlist, xerr=error, align='center', alpha=0.4)
+    a.set_yticks(y_pos)
+    a.set_yticklabels(dlist)
+    
+    canvas = FigureCanvas(f1)  # a gtk.DrawingArea
+    win.add(canvas)
+    win.show_all()
+    gtk.main()
 
 # pylint: disable-msg=W0223
 class Chat(activity.Activity):
