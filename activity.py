@@ -182,65 +182,64 @@ class VisualTime(ToolButton):
 class scoreWindow:
     def __init__(self):
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-    #self.window.set_size_request(800, 200)
-    self.window.set_resizable(False)
-    self.window.set_title("Score card")
-    self.window.set_position(gtk.WIN_POS_CENTER)
-    self.vb=gtk.VBox()
+        #self.window.set_size_request(800, 200)
+        self.window.set_resizable(False)
+        self.window.set_title("Score card")
+        self.window.set_position(gtk.WIN_POS_CENTER)
+        self.vb=gtk.VBox()
 
-    line=''#Declare an empty string 
-    self.go=gtk.Label("Game Over\n")
+        line=''#Declare an empty string 
+        self.go=gtk.Label("Game Over\n")
         self.lalign = gtk.Alignment(0, 0, 0, 0)
         self.label_result = gtk.Label("  Rank\tAccuracy\t\tStart\t\tAdd\t\tMistakes\t\t\tSteps\t\tTime\t\tMode")
 
         self.lalign.add(self.label_result)
 
-    self.vb.pack_start(self.go, False, False, 0)
+        self.vb.pack_start(self.go, False, False, 0)
         self.vb.pack_start(self.lalign, False, False, 0)
-    self.hb1=gtk.HBox()
-    self.tv = gtk.TextView()
-    self.tv.modify_text(gtk.STATE_NORMAL,gtk.gdk.color_parse('black'))
-    self.tv.set_editable(0)
-    self.tv.set_cursor_visible(0)
-    self.tv.set_left_margin(30)
+        self.hb1=gtk.HBox()
+        self.tv = gtk.TextView()
+        self.tv.modify_text(gtk.STATE_NORMAL,gtk.gdk.color_parse('black'))
+        self.tv.set_editable(0)
+        self.tv.set_cursor_visible(0)
+        self.tv.set_left_margin(30)
         textbuffer = self.tv.get_buffer()
         self.tv.show()
-    global gameComplete
-    if (cssw==0):
-     self.readscores(textbuffer,line)
-    elif (cssw==1):
-     if (gameComplete):
-      self.readscores1(textbuffer,line)
+        global gameComplete
+        if (cssw==0):
+            self.readscores(textbuffer,line)
+        elif (cssw==1):
+            if (gameComplete):
+                self.readscores1(textbuffer,line)
+            else:
+                line='Incomplete Game'
+                textbuffer.set_text(line)
+            global cssw
+            cssw=0
+        elif (cssw==2):
+            if (gameComplete):
+                self.readscores2(textbuffer,line)
+            else:
+                line='Incomplete Game'
+                textbuffer.set_text(line)
+            global cssw
+            cssw=0
+        self.hb1.pack_start(self.tv, fill=False)
+        self.hb2=gtk.HBox()
+        self.b1=gtk.Button("Check Last Game answer")
 
-     else:
-      line='Incomplete Game'
-          textbuffer.set_text(line)
-     global cssw
-     cssw=0
-    elif (cssw==2):
-     if (gameComplete):
-      self.readscores2(textbuffer,line)
-     else:
-      line='Incomplete Game'
-          textbuffer.set_text(line)
-     global cssw
-     cssw=0
-    self.hb1.pack_start(self.tv, fill=False)
-    self.hb2=gtk.HBox()
-    self.b1=gtk.Button("Check Last Game answer")
+        self.b2=gtk.Button("Last Game Score")
+        self.b1.connect("clicked", self.chkans_card,self.window)
+        self.b2.connect("clicked", self.last_game_score,self.window)
+        self.hb2.pack_start(self.b1, fill=False)
+        self.hb2.pack_start(self.b2, fill=False)
 
-    self.b2=gtk.Button("Last Game Score")
-    self.b1.connect("clicked", self.chkans_card,self.window)
-    self.b2.connect("clicked", self.last_game_score,self.window)
-    self.hb2.pack_start(self.b1, fill=False)
-    self.hb2.pack_start(self.b2, fill=False)
-
-    self.vb.pack_start(self.hb1, fill=False)
-    self.vb.pack_start(self.hb2, fill=False)
-    color = gtk.gdk.color_parse('#FF8300')
+        self.vb.pack_start(self.hb1, fill=False)
+        self.vb.pack_start(self.hb2, fill=False)
+        color = gtk.gdk.color_parse('#FF8300')
         self.window.modify_bg(gtk.STATE_NORMAL, color)
-    self.window.add(self.vb)
-    self.window.show_all()
+        self.window.add(self.vb)
+        self.window.show_all()
 
 
     def readscores(self,textbuffer,line):
@@ -251,38 +250,38 @@ class scoreWindow:
           textbuffer.set_text(line)
 
     def readscores2(self,textbuffer,line):
-     global luans
-     global lans
-     a=len(lans)
-     b=len(luans)
-     i,j=0,0
-     line+='Your Answer \t <------->\t Correct Answer\n'
-     while i < a and j<b:
-      line+=str(luans[i])+' \t\t\t <------->\t\t'+str(lans[j])+'\n'
-      i+=1
-      j+=1
-         textbuffer.set_text(line)
+        global luans
+        global lans
+        a=len(lans)
+        b=len(luans)
+        i,j=0,0
+        line+='Your Answer \t <------->\t Correct Answer\n'
+        while i < a and j<b:
+            line+=str(luans[i])+' \t\t\t <------->\t\t'+str(lans[j])+'\n'
+            i+=1
+            j+=1
+        textbuffer.set_text(line)
 
     def readscores1(self,textbuffer,line):
-      line+='   '+str(accuracy)+'\t\t\t  '+str(c1)+'\t\t\t  '+str(c2)+'\t\t    '+str(no_of_mistake)+ \
+        line+='   '+str(accuracy)+'\t\t\t  '+str(c1)+'\t\t\t  '+str(c2)+'\t\t    '+str(no_of_mistake)+ \
             '\t\t\t\t  '+str(steps)+'\t\t\t'+'%.1f' % scoretime+'\t\t\t'
-      if ad:
-       line+='Addition\n'
-      elif sb:
-       line+='Subtraction\n'
-          textbuffer.set_text(line)
+        if ad:
+            line+='Addition\n'
+        elif sb:
+            line+='Subtraction\n'
+        textbuffer.set_text(line)
 
     def chkans_card(self,button,window):
-    window.destroy()
-    global cssw
-    cssw=2
-    scoreWindow()
+        window.destroy()
+        global cssw
+        cssw=2
+        scoreWindow()
     
     def last_game_score(self,button,window):
-    window.destroy()
-    global cssw
-    cssw=1
-    scoreWindow()
+        window.destroy()
+        global cssw
+        cssw=1
+        scoreWindow()
 
 class ScoreButton(ToolButton):
     def __init__(self, activity, **kwargs):
@@ -291,14 +290,12 @@ class ScoreButton(ToolButton):
         self.connect('clicked', self.__show_score_win, activity)
 
     def __show_score_win(self, button, activity):
-    scoreWindow()
+        scoreWindow()
 
 
 class NotifyAlert1(Alert):
     def __init__(self, **kwargs):
-    Alert.__init__(self, **kwargs)
-
-
+        Alert.__init__(self, **kwargs)
         self.add_button(1, _('New\nGame'), icon=None)
         self.add_button(2, _(' Change \n Numbers '), icon=None)
         self.add_button(3, _('Easy'), icon=None)
@@ -325,6 +322,8 @@ class ChatStudioSelf(activity.Activity):
         self._entry = None
         self._has_alert = False
         self._has_osk = False
+        self._entry.connect('activate', self.entry_activate_cb)
+        self._entry.connect('key-press-event', self.entry_key_press_cb)
 
         self._setup_canvas()
         GObject.idle_add(self._create_smiley_window)
@@ -421,7 +420,7 @@ class ChatStudioSelf(activity.Activity):
         self._modes = ToolComboBox()
         self._modelist = ['Select Mode','+ Add', '- Subtract']
         for i, f in enumerate(self._modelist):
-         self._modes.combo.append_item(i, f) 
+            self._modes.combo.append_item(i, f) 
         self.modes_handle_id = self._modes.combo.connect("changed",self._changemodes_toolbar)
         toolbar_box.toolbar.insert(self._modes, -1)
 
@@ -706,6 +705,29 @@ class ChatStudioSelf(activity.Activity):
         self._has_alert = True
         self._fixed_resize_cb()
 
+    def entry_key_press_cb(self, widget, event):
+        """Check for scrolling keys.
+        Check if the user pressed Page Up, Page Down, Home or End and
+        scroll the window according the pressed key.
+        """
+        vadj = self.chatbox.get_vadjustment()
+        if event.keyval == gtk.keysyms.Page_Down:
+            value = vadj.get_value() + vadj.page_size
+            if value > vadj.upper - vadj.page_size:
+                value = vadj.upper - vadj.page_size
+            vadj.set_value(value)
+        elif event.keyval == gtk.keysyms.Page_Up:
+            vadj.set_value(vadj.get_value() - vadj.page_size)
+        elif event.keyval == gtk.keysyms.Home and \
+             event.state & gtk.gdk.CONTROL_MASK:
+            vadj.set_value(vadj.lower)
+        elif event.keyval == gtk.keysyms.End and \
+             event.state & gtk.gdk.CONTROL_MASK:
+            vadj.set_value(vadj.upper - vadj.page_size)
+
+
+
+
     def ng(self, alert, response_id):
         global steps
         global no_of_mistake
@@ -806,30 +828,30 @@ class ChatStudioSelf(activity.Activity):
                     c2=choice(l3)
             self.xsum=50
 
-    elif(response_id==4):
-        self.hard_difficulty_level="Medium"
-        l11=[51,52,53,54,56,57,58,59]
-        if ad:
-            c1=randint(2,9)
-            c2=randint(2,9)
+        elif(response_id==4):
+            self.hard_difficulty_level="Medium"
+            l11=[51,52,53,54,56,57,58,59]
+            if ad:
+                c1=randint(2,9)
+                c2=randint(2,9)
+                if (c1==c2):
+                    c2=randint(2,9)
+            elif sb:
+                c1=choice(l11)
+                c2=randint(2,9)
             if (c1==c2):
                 c2=randint(2,9)
-        elif sb:
-            c1=choice(l11)
-            c2=randint(2,9)
-        if (c1==c2):
-            c2=randint(2,9)
-        self.xsum=50
-     
-    elif(response_id==5):
-        self.hard_difficulty_level="Hard"
-        if ad:
-            c1=randint(5,10)
-            c2=randint(5,10)
-        elif sb:
-            c1=randint(100,105) 
-            c2=randint(5,9)
-        self.xsum=100
+            self.xsum=50
+
+        elif(response_id==5):
+            self.hard_difficulty_level="Hard"
+            if ad:
+                c1=randint(5,10)
+                c2=randint(5,10)
+            elif sb:
+                c1=randint(100,105) 
+                c2=randint(5,9)
+            self.xsum=100
 
         self.a1=c1
         self.a2=c2
@@ -850,6 +872,320 @@ class ChatStudioSelf(activity.Activity):
             self._alert1(_('\t\tStart : '+str(c1)+ '\n\t\t+ Add\t: '+str(c2)), _(''))
         if sb:
             self._alert1(_('\t\tStart : '+str(c1)+ '\n\t\t- Subtract\t: '+str(c2)), _(''))
+
+
+
+    def entry_activate_cb(self, entry):
+        strr="Please enter a number."
+
+        self.chatbox._scroll_auto = True
+        text = entry.props.text
+        logger.debug('Entry: %s' % text)
+        global scoretime
+        global accuracy
+        global gameComplete
+        global lans
+        global luans
+        if text.isdigit():
+        if ad:
+            while (self.sum1<=self.xsum):
+                self.chatbox.add_text(self.owner, text)
+                entry.props.text = ''
+            luans.append(int(text))
+            lans.append(self.sum1)
+            self.chatbox.add_text1(self.owner,str(self.sum1))
+            self.connect(self.entry_ans_check_auto(text))
+            if (self.initialize==0):
+                scoretime = time.time()
+                self.initialize=1
+            self.calAccuracy(no_of_mistake,steps)
+            scoretime= time.time() - scoretime
+            self.msg_displ(accuracy,scoretime)
+            gameComplete=True
+            self.game_metadata = True
+            self.write_data_for_visual()
+            self.write_score()
+            self.sort_score_file()
+            self.initialize+=1
+            entry.props.text = ''
+
+
+
+        elif sb:
+            while (self.diff1>0):
+                self.chatbox.add_text(self.owner, text)
+                entry.props.text = ''
+            luans.append(text)
+            lans.append(self.diff1)
+            self.chatbox.add_text1(self.owner,str(self.diff1))
+            self.connect(self.entry_ans_check_auto_diff(text))
+            if (self.initialize==0):
+                scoretime = time.time()
+                self.initialize=1
+            self.calAccuracy(no_of_mistake,steps)
+            scoretime= time.time() - scoretime
+
+            self.msg_displ(accuracy,scoretime)
+
+            gameComplete=True
+            self.write_data_for_visual()
+            self.write_score()
+            self.sort_score_file()
+            self.initialize+=1
+            entry.props.text = ''
+            entry.props.text = ''
+        else:
+            self.chatbox.add_text(self.owner, strr)
+            entry.props.text = ''
+
+    def calAccuracy(self,mist,stps):
+        global accuracy
+        accuracy=((stps-mist)/float(stps))*100
+        accuracy=int(accuracy*100)/100.0
+        accuracy=int(round(accuracy,0))
+
+    def msg_displ(self,ac,st):
+        lbl1=gtk.Label()
+        lbl2=gtk.Label()
+        strdialog=''
+        scoreimg = gtk.Image()
+        if (accuracy==100):
+            strdialog="Congratulations..!!"
+            lbl1.set_text("Perfect Score")
+            lbl2.set_text("Accuracy: "+str(accuracy)+"\nTime: "+str('%.1f' % scoretime))
+            scoreimg.set_from_file ("100AC.svg") 
+        elif (accuracy<100 and accuracy>=85):
+            strdialog="Congratulations..!!"
+            lbl1.set_text("Great Score")
+            lbl2.set_text("Accuracy: "+str(accuracy)+"\nTime: "+str('%.1f' % scoretime))
+            scoreimg.set_from_file ("85_100AC.svg")
+        elif (accuracy<85 and accuracy>=60):
+            strdialog="Congratulations..!!"
+            lbl1.set_text("Well Played")
+            lbl2.set_text("Accuracy: "+str(accuracy)+"\nTime: "+str('%.1f' % scoretime))
+            scoreimg.set_from_file ("60_85AC.svg")
+        elif (accuracy==0):
+            strdialog="Game Over..!!"
+            lbl1.set_text("Better Luck Next Time")
+            lbl2.set_text("Accuracy: "+str(accuracy)+"\nTime: "+str('%.1f' % scoretime))
+            scoreimg.set_from_file ("AC_0.svg") 
+        else:
+            strdialog="Game Over..!!"
+            lbl1.set_text("Play Once More..")
+            lbl2.set_text("Accuracy: "+str(accuracy)+"\nTime: "+str('%.1f' % scoretime))
+            scoreimg.set_from_file ("60AC.svg")
+
+        messagedialog = gtk.MessageDialog(parent=None, flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_INFO, buttons=gtk.BUTTONS_OK,message_format=strdialog)
+        messagedialog.modify_bg(gtk.STATE_NORMAL,gtk.gdk.color_parse('#00FFFF'))
+
+        messagedialog.set_image (scoreimg)
+        action_area = messagedialog.get_content_area()
+
+        action_area.pack_start(lbl1)
+        action_area.pack_start(lbl2)
+        messagedialog.show_all()
+        messagedialog.run()
+        messagedialog.destroy()
+
+
+    def rewrite1(self,dataf,ac):
+        with open('accuracylist.txt','w+') as f11:
+            for line in dataf[1:]: 
+                f11.write(line) 
+            f11.write('%i\n'%ac)
+
+    def rewrite2(self,dataf,x1):
+        with open('dateslist.txt','w+') as f11:
+            for line in dataf[1:]: 
+                f11.write(line) 
+            f11.write('%s\n'%x1)
+
+    def rewrite3(self,dataf,dt):
+        with open('timeslist.txt','w+') as f11:
+            for line in dataf[1:]: 
+                f11.write(line) 
+            f11.write('%.1f\n'%dt)
+
+
+    def write_data_for_visual(self):
+        global accuracy
+        x=time.strftime("%d/%m %I:%M")
+        a=round(scoretime,3)
+        with open("scoreStatistics.csv","a+") as f:
+            f.write(x)
+            f.write(",")
+            f.write('%i'%accuracy)
+            f.write(",")
+            f.write(str(self.a1))
+            f.write(",")
+            f.write(str(self.a2))
+            f.write(",")
+            f.write(str(self.op_mode))
+            f.write(",")
+            f.write(str(steps))
+            f.write(",")
+            f.write(str(no_of_mistake))
+            f.write(",")
+            f.write(str(a))
+            f.write(",")
+            f.write(str(round((a/steps),3)))
+            f.write(",")
+            f.write(self.hard_difficulty_level)
+            f.write("\n")
+        with open("timeeStatistics.csv","a+") as f:
+            f.write(x)
+            f.write(",")
+            f.write('%.1f\n'%a)
+
+        with open("timeeStatistics.csv","a+") as f:
+            all_lines1 = f.readlines()
+
+        with open('accuracylist.txt','r+') as f1:
+            asize= sum(1 for _ in f1)
+
+        with open('accuracylist.txt','rw+') as f1:
+            all_lines1 = f1.readlines()
+            if(asize<10):
+                f1.write('%i\n'%accuracy)
+            else:
+                self.rewrite1(all_lines1,accuracy)
+
+        with open('dateslist.txt','r+') as f2:
+            dsize= sum(1 for _ in f2)
+        with open('dateslist.txt','rw+') as f2:
+            all_lines2 = f2.readlines()
+            if(dsize<10):
+                f2.write('%s\n'%x)
+            else:
+                self.rewrite2(all_lines2,x)
+
+        with open('timeslist.txt','r+') as f3:
+            tsize= sum(1 for _ in f3)
+        with open('timeslist.txt','rw+') as f3:
+            all_lines3 = f3.readlines()
+            if(tsize<10):
+                f3.write('%.1f\n'%a)
+            else:
+                self.rewrite3(all_lines3,a)
+
+    def write_score(self):
+        if ad:
+            line1='Addition'
+        elif sb:
+            line1='Subtraction'
+        l= [[accuracy,self.a1,self.a2,no_of_mistake,steps,'%.1f' % scoretime,line1]]
+
+        with open('score_card.txt', 'a+') as f:
+            for row in l:
+                for column in row:
+                    f.write('%s\t\t\t\t' % column)
+                f.write('\n')
+            f.close()
+
+
+    def sort_score_file(self):
+        with open('score_card.txt') as fin:
+            lines = [line.split() for line in fin]
+            #lines.sort(key=itemgetter(0),reverse=True)
+            lines.sort(key=lambda x:int(x[0]), reverse=True)
+            with open('score_card1.txt', 'w') as fout:
+                for el in lines:
+                    fout.write('{0}\t\t\t\t\n'.format('\t\t\t'.join(el)))
+
+    #to evaluate the entered answer
+    def entry_ans_check_auto_diff(self,ans):
+        global steps
+        global no_of_mistake
+        global accuracy
+        global lans
+        global luans
+        steps+=1
+        if (self.diff1==int(ans)):
+            accuracy+=10
+            self.diff1=self.diff1-self.a2
+        elif (int(ans) > self.diff1):
+            no_of_mistake+=1
+            self.diff1=self.diff1-self.a2
+        elif (int(ans) < self.diff1):
+            no_of_mistake+=1
+            self.diff1=self.diff1-self.a2
+        self.connect(self.entry_ans_check_auto_diff(self.connect(self.entry_activate_cb())))    
+
+    def entry_ans_check_auto(self,ans):
+        global steps
+        global no_of_mistake
+        global accuracy
+        global lans
+        global luans
+
+        steps+=1
+        if (self.sum1==int(ans)):
+            accuracy+=10
+            self.sum1=self.sum1+self.a2
+        elif (int(ans) > self.sum1):
+            no_of_mistake+=1
+            self.sum1=self.sum1+self.a2
+        elif (int(ans) < self.sum1):
+            no_of_mistake+=1
+            self.sum1=self.sum1+self.a2
+        self.connect(self.entry_ans_check_auto(self.connect(self.entry_activate_cb())))    
+
+    def write_file(self, file_path):
+
+        """Store chat log in Journal.
+
+        Handling the Journal is provided by Activity - we only need
+        to define this method.
+        """
+        logger.debug('write_file: writing %s' % file_path)
+        self.chatbox.add_log_timestamp()
+        f = open(file_path, 'w')
+        try:
+            f.write(self.chatbox.get_log())
+        finally:
+            f.close()
+        self.metadata['mime_type'] = 'text/plain'
+
+        if self.game_metadata:
+            self.metadata['Steps'] = steps
+            self.metadata['Accuracy'] = accuracy
+            self.mode_of_game["Player"] = str(self.owner.props.nick)
+            self.mode_of_game["Played At"] = str(datetime.now())
+            self.mode_of_game["Start_Num: "] = self.a1
+            self.mode_of_game["Second_num"] = self.a2
+            self.mode_of_game["Mistakes"] = no_of_mistake
+            self.mode_of_game["Mode_of_game"] = self.op_mode
+            self.mode_of_game["Steps"] = steps
+            self.mode_of_game["Accuracy"] = accuracy
+            self.mode_of_game["Correct_Ans"] = json.dumps(lans)
+            self.mode_of_game["User_Ans"] = json.dumps(luans)
+            self.mode_of_game["Time_taken"] = round(scoretime,3)
+            self.mode_of_game["Avg_response_time"] = round((scoretime/steps),3)
+            self.mode_of_game["Difficulty_Level"] = str(self.hard_difficulty_level)
+            self.metadata['Game_Details'] = json.dumps(self.mode_of_game, indent=4)
+
+    def read_file(self, file_path):
+        """Load a chat log from the Journal.
+
+        Handling the Journal is provided by Activity - we only need
+        to define this method.
+        """
+        logger.debug('read_file: reading %s' % file_path)
+        log = open(file_path).readlines()
+        last_line_was_timestamp = False
+        for line in log:
+            if line.endswith('\t\t\n'):
+                if last_line_was_timestamp is False:
+                    timestamp = line.strip().split('\t')[0]
+                    self.chatbox.add_separator(timestamp)
+                    last_line_was_timestamp = True
+            else:
+                timestamp, nick, color, status, text = line.strip().split('\t')
+                status_message = bool(int(status))
+                self.chatbox.add_text({'nick': nick, 'color': color},
+                              text, status_message)
+                last_line_was_timestamp = False
+
 
     def __open_on_journal(self, widget, url):
         '''Ask the journal to display a URL'''
