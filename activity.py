@@ -459,6 +459,33 @@ class ChatStudioSelf(activity.Activity):
         toolbar_box.show_all()
 
 
+    def _changemodes_toolbar(self, combo):
+        self.x = combo.get_active()
+        global c1
+        global c2
+        if (self.x == 1):
+            c1=randint(5,9)
+            c2=randint(5,9)
+            combo.set_sensitive(False)
+            self.a1=c1
+            self.a2=c2
+            self.sum1=self.a1+self.a2
+            self.op_mode="Addition"
+            global ad
+            ad=True
+            self.showalert()
+
+        elif (self.x==2):
+            c1=randint(50,55)
+            c2=randint(5,9)
+            combo.set_sensitive(False)
+            self.a1=c1
+            self.a2=c2
+            self.diff1=self.a1-self.a2
+            self.op_mode="Subtraction"
+            global sb
+            sb=True
+            self.showalert()
 
     def _fixed_resize_cb(self, widget=None, rect=None):
         ''' If a toolbar opens or closes, we need to resize the vbox
