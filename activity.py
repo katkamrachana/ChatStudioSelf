@@ -74,6 +74,29 @@ if _HAS_SOUND:
     Gst.init([])
 
 
+from chat.box import TextBox
+logger = logging.getLogger('ChatStudioSelf-activity')
+steps=0
+SMILIES_COLUMNS = 5
+snum=0
+c1=0
+chk=0
+c2=0
+scoretime=time.time()
+flag=0
+accuracy=0
+cssw=0
+no_of_mistake=0
+lans=[]
+luans=[]
+gameComplete=False
+dates=[]
+timescores=[]
+accscores=[]
+ad=False
+sb=False
+
+
 # pylint: disable-msg=W0223
 class Chat(activity.Activity):
 
