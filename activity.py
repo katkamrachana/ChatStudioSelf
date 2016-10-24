@@ -62,6 +62,14 @@ from sugar3.activity.activity import show_object_in_journal
 from sugar3.datastore import datastore
 from sugar3 import profile
 
+import time
+import subprocess
+import matplotlib.pyplot as plt; plt.rcdefaults()
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
+
 from chat import smilies
 from chat.box import ChatBox
 
@@ -169,6 +177,113 @@ class VisualTime(ToolButton):
     win.add(canvas)
     win.show_all()
     gtk.main()
+
+
+class scoreWindow:
+    def __init__(self):
+        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+    #self.window.set_size_request(800, 200)
+    self.window.set_resizable(False)
+    self.window.set_title("Score card")
+    self.window.set_position(gtk.WIN_POS_CENTER)
+    self.vb=gtk.VBox()
+
+    line=''#Declare an empty string 
+    self.go=gtk.Label("Game Over\n")
+        self.lalign = gtk.Alignment(0, 0, 0, 0)
+        self.label_result = gtk.Label("  Rank\tAccuracy\t\tStart\t\tAdd\t\tMistakes\t\t\tSteps\t\tTime\t\tMode")
+
+        self.lalign.add(self.label_result)
+
+    self.vb.pack_start(self.go, False, False, 0)
+        self.vb.pack_start(self.lalign, False, False, 0)
+    self.hb1=gtk.HBox()
+    self.tv = gtk.TextView()
+    self.tv.modify_text(gtk.STATE_NORMAL,gtk.gdk.color_parse('black'))
+    self.tv.set_editable(0)
+    self.tv.set_cursor_visible(0)
+    self.tv.set_left_margin(30)
+        textbuffer = self.tv.get_buffer()
+        self.tv.show()
+    global gameComplete
+    if (cssw==0):
+     self.readscores(textbuffer,line)
+    elif (cssw==1):
+     if (gameComplete):
+      self.readscores1(textbuffer,line)
+
+     else:
+      line='Incomplete Game'
+          textbuffer.set_text(line)
+     global cssw
+     cssw=0
+    elif (cssw==2):
+     if (gameComplete):
+      self.readscores2(textbuffer,line)
+     else:
+      line='Incomplete Game'
+          textbuffer.set_text(line)
+     global cssw
+     cssw=0
+    self.hb1.pack_start(self.tv, fill=False)
+    self.hb2=gtk.HBox()
+    self.b1=gtk.Button("Check Last Game answer")
+
+    self.b2=gtk.Button("Last Game Score")
+    self.b1.connect("clicked", self.chkans_card,self.window)
+    self.b2.connect("clicked", self.last_game_score,self.window)
+    self.hb2.pack_start(self.b1, fill=False)
+    self.hb2.pack_start(self.b2, fill=False)
+
+    self.vb.pack_start(self.hb1, fill=False)
+    self.vb.pack_start(self.hb2, fill=False)
+    color = gtk.gdk.color_parse('#FF8300')
+        self.window.modify_bg(gtk.STATE_NORMAL, color)
+    self.window.add(self.vb)
+    self.window.show_all()
+
+
+    def readscores(self,textbuffer,line):
+     if not (os.stat("score_card1.txt").st_size==0): #when file not empty
+          with open("score_card1.txt", "r") as infile:
+       for i in range(0,10): #displays only top 10 lines of the file
+         line+='\n'+str(i+1)+'\t'+infile.readline()
+          textbuffer.set_text(line)
+
+    def readscores2(self,textbuffer,line):
+     global luans
+     global lans
+     a=len(lans)
+     b=len(luans)
+     i,j=0,0
+     line+='Your Answer \t <------->\t Correct Answer\n'
+     while i < a and j<b:
+      line+=str(luans[i])+' \t\t\t <------->\t\t'+str(lans[j])+'\n'
+      i+=1
+      j+=1
+         textbuffer.set_text(line)
+
+    def readscores1(self,textbuffer,line):
+      line+='   '+str(accuracy)+'\t\t\t  '+str(c1)+'\t\t\t  '+str(c2)+'\t\t    '+str(no_of_mistake)+ \
+            '\t\t\t\t  '+str(steps)+'\t\t\t'+'%.1f' % scoretime+'\t\t\t'
+      if ad:
+       line+='Addition\n'
+      elif sb:
+       line+='Subtraction\n'
+          textbuffer.set_text(line)
+
+    def chkans_card(self,button,window):
+    window.destroy()
+    global cssw
+    cssw=2
+    scoreWindow()
+    
+    def last_game_score(self,button,window):
+    window.destroy()
+    global cssw
+    cssw=1
+    scoreWindow()
+
 
 # pylint: disable-msg=W0223
 class Chat(activity.Activity):
