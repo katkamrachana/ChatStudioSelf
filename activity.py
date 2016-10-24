@@ -696,6 +696,161 @@ class ChatStudioSelf(activity.Activity):
         self._has_alert = False
         self._fixed_resize_cb()
 
+    def _alert1(self, title, text=None):
+        alert = NotifyAlert1()
+        alert.props.title = title
+        alert.props.msg = text
+        self.add_alert(alert)
+        alert.connect('response', self.ng)
+        alert.show()
+        self._has_alert = True
+        self._fixed_resize_cb()
+
+    def ng(self, alert, response_id):
+        global steps
+        global no_of_mistake
+        global accuracy
+        global lans
+        global luans
+        global gameComplete
+        steps=0
+        accuracy=0.0
+        no_of_mistake=0
+        self.initialize==0
+        gameComplete=False
+        del lans[:] 
+        del luans[:]
+        global scoretime
+        scoretime = time.time()
+        self.remalert(alert)
+        global c1
+        global c2
+        self.xx=1
+        self.chatbox.rem()  
+
+        if (response_id==1): #Cancel--> New Game
+            self.hard_difficulty_level="Easy"
+            if ad:
+                c1=randint(5,9) 
+                c2=randint(5,9)
+                self.xsum=50
+            elif sb:
+                c1=randint(50,59)   
+                c2=randint(5,9)
+                self.xsum=50
+
+        elif (response_id==2): #OK--> Change Numbers Dialog
+            self.hard_difficulty_level="Changed_Numbers"
+
+            messagedialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_QUESTION, buttons=gtk.BUTTONS_OK,\
+            message_format="Enter Numbers")
+            action_area = messagedialog.get_content_area()
+            lbl1=gtk.Label("Start")
+            entry1 = gtk.Entry()
+            entry1.set_size_request(int(gtk.gdk.screen_width() / 25),-1)
+            if ad:
+                lbl2=gtk.Label("+ Add")
+            elif sb:
+                lbl2=gtk.Label("- Subtract")
+            entry2 = gtk.Entry()
+            entry2.set_size_request(int(gtk.gdk.screen_width() / 25),-1)
+
+            action_area.pack_start(lbl1)
+            action_area.pack_start(entry1)
+            action_area.pack_start(lbl2)
+            action_area.pack_start(entry2)
+            messagedialog.show_all()
+            ark=messagedialog.run()
+
+            if ark == gtk.RESPONSE_OK:
+                try:
+                    c1 = int(entry1.get_text())
+                    c2 = int(entry2.get_text())
+                    if sb:
+                    if (c2>c1):
+                        #raise BadNum("Num2 canot be greater than Num1")
+                        raise Exception
+                except Exception:
+                    if ad:
+                        c1=randint(5,9)
+                        c2=randint(5,9)
+                    elif sb:
+                        c1=randint(50,59)
+                        c2=randint(5,9)
+
+            messagedialog.destroy()
+            self.xsum=50
+
+        elif(response_id==3):
+            self.hard_difficulty_level="Easy"
+            easylistStartNum=[50,52,54,55,56,51]
+            l1=[6,9,3,2]
+            l2=[5,10,2]
+            l3=[7,8]
+            if ad:
+                c1=randint(1,9)
+                c2=c1
+            elif sb:
+                c1=choice(easylistStartNum) 
+                if (c1==50):
+                    c2=choice(l2)
+                elif (c1==51):
+                    c2=3
+                elif (c1==52):
+                    c2=2
+                elif (c1==54):
+                    c2=choice(l1)
+                elif (c1==55):
+                    c2=5
+                elif (c1==56):
+                    c2=choice(l3)
+            self.xsum=50
+
+    elif(response_id==4):
+        self.hard_difficulty_level="Medium"
+        l11=[51,52,53,54,56,57,58,59]
+        if ad:
+            c1=randint(2,9)
+            c2=randint(2,9)
+            if (c1==c2):
+                c2=randint(2,9)
+        elif sb:
+            c1=choice(l11)
+            c2=randint(2,9)
+        if (c1==c2):
+            c2=randint(2,9)
+        self.xsum=50
+     
+    elif(response_id==5):
+        self.hard_difficulty_level="Hard"
+        if ad:
+            c1=randint(5,10)
+            c2=randint(5,10)
+        elif sb:
+            c1=randint(100,105) 
+            c2=randint(5,9)
+        self.xsum=100
+
+        self.a1=c1
+        self.a2=c2
+        if ad:
+            self.sum1=self.a1+self.a2
+        if sb:
+            self.diff1=self.a1-self.a2
+        global lans
+        lans.append(self.sum1)
+        self.showalert()
+
+    def remalert(self,alert):
+        self.remove_alert(alert)
+
+    def showalert(self):
+        self.chatbox.rem()
+        if ad:      
+            self._alert1(_('\t\tStart : '+str(c1)+ '\n\t\t+ Add\t: '+str(c2)), _(''))
+        if sb:
+            self._alert1(_('\t\tStart : '+str(c1)+ '\n\t\t- Subtract\t: '+str(c2)), _(''))
+
     def __open_on_journal(self, widget, url):
         '''Ask the journal to display a URL'''
         logger.debug('Create journal entry for URL: %s', url)
