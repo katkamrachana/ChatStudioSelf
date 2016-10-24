@@ -306,7 +306,7 @@ class NotifyAlert1(Alert):
         self.add_button(5, _('Hard'), icon=None)
 
 # pylint: disable-msg=W0223
-class Chat(activity.Activity):
+class ChatStudioSelf(activity.Activity):
 
     def __init__(self, handle):
         smilies.init()
@@ -320,7 +320,7 @@ class Chat(activity.Activity):
             self.owner, self._ebook_mode_detector.get_ebook_mode())
         self.chatbox.connect('open-on-journal', self.__open_on_journal)
 
-        super(Chat, self).__init__(handle)
+        super(ChatStudioSelf, self).__init__(handle)
 
         self._entry = None
         self._has_alert = False
@@ -330,23 +330,46 @@ class Chat(activity.Activity):
         GObject.idle_add(self._create_smiley_window)
 
         self._entry.grab_focus()
+        self.a=0
+        global accuracy
+        accuracy=0
+        global luans
+        del luans[:]
+        self.a1=0
+        self.a2=0
+        self.xsum=50
+        self.sum1=0
+        self.diff1=0
+        self.xx=0
+        self.mode_of_game={}
+        self.op_mode=""
+        self.game_metadata = False
 
-        toolbar_box = ToolbarBox()
-        self.set_toolbar_box(toolbar_box)
+        global lans
+        del lans[:]
+        self.attempts=1
+        self.hard_difficulty_level="Easy"
+        self.initialize=0
+        self.create_toolbar()
 
-        self._activity_toolbar_button = ActivityToolbarButton(self)
-        self._activity_toolbar_button.connect('clicked', self._fixed_resize_cb)
 
-        toolbar_box.toolbar.insert(self._activity_toolbar_button, 0)
-        self._activity_toolbar_button.show()
 
-        separator = Gtk.SeparatorToolItem()
-        separator.props.draw = False
-        separator.set_expand(True)
-        toolbar_box.toolbar.insert(separator, -1)
+        # toolbar_box = ToolbarBox()
+        # self.set_toolbar_box(toolbar_box)
 
-        toolbar_box.toolbar.insert(StopButton(self), -1)
-        toolbar_box.show_all()
+        # self._activity_toolbar_button = ActivityToolbarButton(self)
+        # self._activity_toolbar_button.connect('clicked', self._fixed_resize_cb)
+
+        # toolbar_box.toolbar.insert(self._activity_toolbar_button, 0)
+        # self._activity_toolbar_button.show()
+
+        # separator = Gtk.SeparatorToolItem()
+        # separator.props.draw = False
+        # separator.set_expand(True)
+        # toolbar_box.toolbar.insert(separator, -1)
+
+        # toolbar_box.toolbar.insert(StopButton(self), -1)
+        # toolbar_box.show_all()
 
         # Chat is room or one to one:
         self._chat_is_room = False
@@ -379,6 +402,63 @@ class Chat(activity.Activity):
                 self._entry.props.placeholder_text = \
                     _('Please wait for a connection before starting to chat.')
             self.connect('shared', self._shared_cb)
+    def create_toolbar(self):
+        toolbar_box = ToolbarBox()
+        self.set_toolbar_box(toolbar_box)
+        toolbar_box.toolbar.insert(ActivityToolbarButton(self), -1)
+
+        separator = gtk.SeparatorToolItem()
+        separator.props.draw = False
+        toolbar_box.toolbar.insert(separator, -1)
+
+        scoreButton=ScoreButton(self)
+        toolbar_box.toolbar.insert(scoreButton,-1)
+
+        separator = gtk.SeparatorToolItem()
+        separator.props.draw = False
+        toolbar_box.toolbar.insert(separator, -1)
+
+        self._modes = ToolComboBox()
+        self._modelist = ['Select Mode','+ Add', '- Subtract']
+        for i, f in enumerate(self._modelist):
+         self._modes.combo.append_item(i, f) 
+        self.modes_handle_id = self._modes.combo.connect("changed",self._changemodes_toolbar)
+        toolbar_box.toolbar.insert(self._modes, -1)
+
+        self._modes.combo.set_active(0)
+
+        separator = gtk.SeparatorToolItem()
+        separator.props.draw = False
+        toolbar_box.toolbar.insert(separator, -1)
+
+        scorestats=VisualScore(self)
+        toolbar_box.toolbar.insert(scorestats,-1)
+
+        separator = gtk.SeparatorToolItem()
+        separator.props.draw = False
+        toolbar_box.toolbar.insert(separator, -1)
+
+        separator = gtk.SeparatorToolItem()
+        separator.props.draw = False
+        toolbar_box.toolbar.insert(separator, -1)
+
+        timestats=VisualTime(self)
+        toolbar_box.toolbar.insert(timestats,-1)
+
+        separator = gtk.SeparatorToolItem()
+        separator.props.draw = False
+        toolbar_box.toolbar.insert(separator, -1)
+
+        separator = gtk.SeparatorToolItem()
+        separator.props.draw = False
+        separator.set_expand(True)
+        toolbar_box.toolbar.insert(separator, -1)
+
+        stopButton=StopButton(self)
+        toolbar_box.toolbar.insert(stopButton,-1)
+        toolbar_box.show_all()
+
+
 
     def _fixed_resize_cb(self, widget=None, rect=None):
         ''' If a toolbar opens or closes, we need to resize the vbox
